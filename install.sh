@@ -1,6 +1,36 @@
 #!/data/data/com.termux/files/usr/bin/bash
 set -Eeuo pipefail
 
+PINK='\033[38;5;213m'
+RESET='\033[0m'
+
+printf '%b' "$PINK"
+cat <<'ART'
+⣿⣆⠱⣝⡵⣝⢅⠙⣿⢕⢕⢕⢕⢝⣥⢒⠅⣿⣿⣿⡿⣳⣌⠪⡪⣡⢑
+⣿⣿⣦⠹⣳⣳⣕⢅⠈⢗⢕⢕⢕⢕⢕⢈⢆⠟⠋⠉⠁⠉⠉⠁⠈⠼⢐
+⢰⣶⣶⣦⣝⢝⢕⢕⠅⡆⢕⢕⢕⢕⢕⣴⠏⣠⡶⠛⡉⡉⡛⢶⣦⡀⠐
+⡄⢻⢟⣿⣿⣷⣕⣕⣅⣿⣔⣕⣵⣵⣿⣿⢠⣿⢠⣮⡈⣌⠨⠅⠹⣷⡀
+⡵⠟⠈⢀⣀⣀⡀⠉⢿⣿⣿⣿⣿⣿⣿⣿⣼⣿⢈⡋⠴⢿⡟⣡⡇⣿⡇
+⠁⣠⣾⠟⡉⡉⡉⠻⣦⣻⣿⣿⣿⣿⣿⣿⣿⣿⣧⠸⣿⣦⣥⣿⡇⡿⣰
+⢰⣿⡏⣴⣌⠈⣌⠡⠈⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣬⣉⣉⣁⣄⢖⢕
+⢻⣿⡇⢙⠁⠴⢿⡟⣡⡆⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣵
+⣄⣻⣿⣌⠘⢿⣷⣥⣿⠇⣿⣿⣿⣿⣿⣿⠛⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿
+⢄⠻⣿⣟⠿⠦⠍⠉⣡⣾⣿⣿⣿⣿⣿⣿⢸⣿⣦⠙⣿⣿⣿⣿⣿⣿⣿
+⡑⣑⣈⣻⢗⢟⢞⢝⣻⣿⣿⣿⣿⣿⣿⣿⠸⣿⠿⠃⣿⣿⣿⣿⣿⣿⡿
+⡵⡈⢟⢕⢕⢕⢕⣵⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣶⣿⣿⣿⣿⣿⠿⠋⣀
+ART
+printf '%b\n' "$RESET"
+
+printf '%b' "$PINK"
+read -r -p "Запустить установку? (Y or N): " answer
+printf '%b' "$RESET"
+
+case "$answer" in
+  [Yy]|[Yy][Ee][Ss]) ;;
+  [Nn]|[Nn][Oo]) echo "Установка отменена."; exit 0 ;;
+  *) echo "Введи Y для запуска или N для отмены."; exit 1 ;;
+esac
+
 BUNDLE_URL="https://github.com/HookHatai/PocketMine-mob/releases/download/Phar/pocketmine-162dev-arm64-bundle.tar.gz"
 BUNDLE_SHA256="72fbb516576b120febaeed8a18934600b4aa6b24bad3b3cb51f549331d5689e6"
 BUNDLE="$HOME/pocketmine-162dev-arm64-bundle.tar.gz"
