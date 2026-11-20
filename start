@@ -1,0 +1,27 @@
+#!/data/data/com.termux/files/usr/bin/bash
+set -e
+
+if ! command -v proot-distro >/dev/null 2>&1; then
+  echo "Не найдена proot-distro. Установи: pkg install proot-distro"
+  exit 1
+fi
+if ! command -v tmux >/dev/null 2>&1; then
+  echo "Не найдена tmux. Установи: pkg install tmux"
+  exit 1
+fi
+if tmux has-session -t pocketmine 2>/dev/null; then
+  echo "Сессия PocketMine уже существует. Введи: console"
+  exit 0
+fi
+
+echo "Запускаю PocketMine в Debian..."
+tmux new-session -d -s pocketmine "proot-distro login debian -- bash -lc 'cd /root/pocketmine && export LD_LIBRARY_PATH=/opt/php72/compat/usr/lib/aarch64-linux-gnu:/opt/php72/lib && exec /opt/php72/bin/php -d extension=/opt/php72/lib/php/extensions/no-debug-zts-20170718/pthreads.so -d extension=/opt/php72/lib/php/extensions/no-debug-zts-20170718/yaml.so -d extension=/opt/php72/lib/php/extensions/no-debug-zts-20170718/bcmath.so PocketMine-MP.phar'"
+
+sleep 2
+if tmux has-session -t pocketmine 2>/dev/null; then
+  echo "Сервер запущен в сессии pocketmine."
+  echo "Консоль: console"
+else
+  echo "Не удалось создать сессию. Проверь установку Debian и tmux."
+  exit 1
+fi
