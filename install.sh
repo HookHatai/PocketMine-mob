@@ -1,7 +1,6 @@
 #!/data/data/com.termux/files/usr/bin/bash
 set -Eeuo pipefail
 
-REPO="https://github.com/HookHatai/PocketMine-mob"
 BUNDLE_URL="https://github.com/HookHatai/PocketMine-mob/releases/download/Phar/pocketmine-162dev-arm64-bundle.tar.gz"
 BUNDLE_SHA256="72fbb516576b120febaeed8a18934600b4aa6b24bad3b3cb51f549331d5689e6"
 BUNDLE="$HOME/pocketmine-162dev-arm64-bundle.tar.gz"
@@ -26,15 +25,10 @@ curl -fL --retry 3 "$BUNDLE_URL" -o "$BUNDLE"
 echo "$BUNDLE_SHA256  $BUNDLE" | sha256sum -c -
 
 echo "[3/6] Устанавливаю Debian..."
-if ! proot-distro list 2>/dev/null | grep -qE '^debian([[:space:]]|$)'; then
-  proot-distro install debian
-else
-  if [ ! -d "$PREFIX/var/lib/proot-distro/containers/debian/rootfs" ]; then
-    proot-distro install debian
-  fi
-fi
-
 ROOTFS="$PREFIX/var/lib/proot-distro/containers/debian/rootfs"
+if [ ! -d "$ROOTFS" ]; then
+  proot-distro install debian
+fi
 if [ ! -d "$ROOTFS" ]; then
   echo "Не найден rootfs Debian: $ROOTFS"
   exit 1
@@ -62,13 +56,7 @@ for f in "$PHP" "$EXT/pthreads.so" "$EXT/yaml.so" "$EXT/bcmath.so" /root/pocketm
   test -f "$f" || { echo "Не найден файл: $f"; exit 1; }
 done
 "$PHP" -v | head -n 1
-"$PHP" -d extension="$EXT/pthreads.so" -d extension="$EXT/yaml.so" -d extension="$EXT/bcmath.so" -r '''
-foreach (["pthreads", "yaml", "bcmath"] as $e) {
-  if (!extension_loaded($e)) { fwrite(STDERR, "Missing extension: $e\\n"); exit(1); }
-}
-if (bcadd("1", "2") !== "3") { exit(2); }
-echo "PHP extensions OK; BCMath OK\\n";
-'''
+"$PHP" -d extension="$EXT/pthreads.so" -d extension="$EXT/yaml.so" -d extension="$EXT/bcmath.so" -r "if (!extension_loaded(\"pthreads\") || !extension_loaded(\"yaml\") || !extension_loaded(\"bcmath\")) { exit(1); } if (bcadd(\"1\", \"2\") !== \"3\") { exit(2); } echo \"PHP extensions OK; BCMath OK\\n\";"
 '
 
 cat > "$PREFIX/bin/pmstart" <<'EOF'
