@@ -43,7 +43,7 @@ proot-distro login debian -- bash -lc '
 set -e
 export DEBIAN_FRONTEND=noninteractive
 apt-get update
-apt-get install -y ca-certificates libxml2 libcurl4t64 libzip5 zlib1g libyaml-0-2 libssl3 libsqlite3-0
+apt-get install -y ca-certificates libxml2 libcurl4t64 libzip5 zlib1g libyaml-0-2 libssl3t64 libsqlite3-0
 '
 
 echo "[6/6] Проверяю PHP, расширения и PocketMine..."
