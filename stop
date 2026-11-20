@@ -1,0 +1,11 @@
+#!/data/data/com.termux/files/usr/bin/bash
+if ! command -v tmux >/dev/null 2>&1; then
+  echo "Не найдена tmux. Установи: pkg install tmux"
+  exit 1
+fi
+if tmux has-session -t pocketmine 2>/dev/null; then
+  tmux send-keys -t pocketmine "stop" Enter
+  echo "Команда остановки отправлена PocketMine."
+else
+  echo "Сессия PocketMine не запущена."
+fi
