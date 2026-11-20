@@ -1,35 +1,39 @@
 # PocketMine-mob
 
-Скрипты управления PocketMine-MP 1.6.2dev для Termux + Debian proot-distro.
+Автоматическая установка PocketMine-MP 1.6.2dev для Android ARM64 через Termux + Debian proot-distro.
 
-## Установка
+## Установка на чистом Termux
 
-В Termux (не внутри Debian):
+Выполни в Termux одну команду:
 
 ```bash
-pkg update
-pkg install git tmux proot-distro
-git clone https://github.com/HookHatai/PocketMine-mob.git
-cd PocketMine-mob
-bash install.sh
+pkg update -y && pkg install -y git && git clone https://github.com/HookHatai/PocketMine-mob.git && cd PocketMine-mob && bash install.sh
 ```
 
-## Команды
+Установщик автоматически:
+- проверяет архитектуру ARM64;
+- устанавливает Termux-инструменты и Debian;
+- скачивает PHP 7.2.34 ZTS + pthreads/yaml/bcmath + PocketMine PHAR из GitHub Release;
+- проверяет SHA-256 архива;
+- устанавливает системные библиотеки Debian и проверяет PHP.
 
-- `start` — запускает сервер в фоновой tmux-сессии.
-- `console` — подключается к консоли сервера.
-- `stop` — отправляет PocketMine команду штатной остановки.
+## Управление сервером
+
+Команды доступны в Termux:
+
+- `pmstart` — запуск PocketMine в фоновой tmux-сессии.
+- `pmconsole` — подключение к консоли.
+- `pmstop` — штатная остановка сервера.
 
 Чтобы выйти из консоли, не останавливая сервер: нажми Ctrl+B, затем D.
 
-## Требования
+## Сборка
 
-Этот репозиторий пока содержит только управляющие скрипты. Он НЕ скачивает и НЕ устанавливает автоматически Debian, PHP 7.2, расширения или PocketMine PHAR.
+Используется проверенный архив ARM64 из [GitHub Releases](https://github.com/HookHatai/PocketMine-mob/releases/tag/Phar).
 
-Ожидается, что в Debian уже существуют:
+- PocketMine-MP: 1.6.2dev (Unleashed)
+- Minecraft PE: 1.1.0.55
+- PHP: 7.2.34 ZTS
+- Расширения: pthreads, yaml, bcmath
 
-- `/root/pocketmine/PocketMine-MP.phar`
-- `/opt/php72/bin/php`
-- PHP-расширения pthreads, yaml и bcmath в `/opt/php72/lib/php/extensions/no-debug-zts-20170718/`
-
-Скрипты запускают именно старую сборку PocketMine-MP 1.6.2dev через PHP 7.2 ZTS.
+Сборка предназначена для Android ARM64. Это устаревшая версия PocketMine для совместимости с указанным старым клиентом Minecraft; она не является современной или поддерживаемой версией сервера.
