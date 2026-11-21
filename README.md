@@ -27,6 +27,46 @@ pkg update -y && pkg install -y git && git clone https://github.com/HookHatai/Po
 
 Чтобы выйти из консоли, не останавливая сервер: нажми Ctrl+B, затем D.
 
+## Установка на Ubuntu (WSL или Linux x86_64)
+
+Выполни одну команду:
+
+```bash
+git clone https://github.com/HookHatai/PocketMine-mob.git && cd PocketMine-mob && bash install-ubuntu.sh
+```
+
+Установщик скачивает проверенный архив PHP 7.0.3 ZTS и PocketMine-MP 1.6.2dev, проверяет SHA-256 и создаёт команды управления.
+
+### Управление сервером в Ubuntu
+
+- `pmstart` — запуск сервера.
+- `pmconsole` — открыть консоль.
+- `pmstop` — штатно остановить сервер.
+
+### Обновление установщика
+
+```bash
+cd ~/PocketMine-mob && git pull
+```
+
+### Удаление репозитория установщика
+
+```bash
+rm -rf ~/PocketMine-mob
+```
+
+Эта команда удаляет только папку с установщиком. Установленный сервер в `~/pocketmine-162dev-ubuntu-x64` остаётся.
+
+## Установка через Windows PowerShell
+
+Открой PowerShell и выполни:
+
+```powershell
+irm https://raw.githubusercontent.com/HookHatai/PocketMine-mob/main/install.ps1 | iex
+```
+
+Скрипт подготовит Ubuntu через WSL и запустит Linux-установщик. При необходимости запускай PowerShell от имени администратора.
+
 ## Сборка
 
 Используется проверенный архив ARM64 из [GitHub Releases](https://github.com/HookHatai/PocketMine-mob/releases/tag/Phar).
