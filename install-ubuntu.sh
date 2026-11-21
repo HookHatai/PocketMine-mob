@@ -75,10 +75,10 @@ cat > "$LOCAL_BIN/pmconsole" <<'EOF'
 if tmux has-session -t pocketmine-ubuntu 2>/dev/null; then tmux attach-session -t pocketmine-ubuntu; else echo "PocketMine не запущен. Сначала введи pmstart."; fi
 EOF
 chmod +x "$LOCAL_BIN/pmstart" "$LOCAL_BIN/pmstop" "$LOCAL_BIN/pmconsole"
-if [[ ":$PATH:" != *":$LOCAL_BIN:"* ]]; then
-  echo 'Добавь ~/.local/bin в PATH:'
-  echo 'echo '\''export PATH="$HOME/.local/bin:$PATH"'\'' >> ~/.bashrc && source ~/.bashrc'
+if ! grep -Fqx 'export PATH="$HOME/.local/bin:$PATH"' "$HOME/.bashrc" 2>/dev/null; then
+  printf '\nexport PATH="$HOME/.local/bin:$PATH"\n' >> "$HOME/.bashrc"
 fi
+export PATH="$LOCAL_BIN:$PATH"
 echo
 echo "Установка завершена. Старая папка ~/pocketmine не затронута."
 echo "Новая папка: $INSTALL_DIR"
