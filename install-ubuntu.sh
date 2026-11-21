@@ -17,12 +17,15 @@ cat <<'ART'
 ⡵⡈⢟⢕⢕⢕⢕⣵⣿⣿⣿⣿⣿⣿⣿⣿⣶⣶⣿⣿⣿⣿⣿⠿⠋⣀
 ART
 printf '%b\n' "$RESET"
-printf '%b' "$PINK"; read -r -p "Запустить установку? (Y or N): " answer; printf '%b' "$RESET"
-# Normalize input (including Windows CRLF) and accept upper/lowercase.
-answer="$(printf '%s' "$answer" | tr -d '\r' | tr '[:upper:]' '[:lower:]' | xargs)"
+printf '%b' "$PINK"
+read -r -p "Запустить установку? (Y or N): " answer
+printf '%b' "$RESET"
+
+# Accept y/Y/yes/YES and n/N/no/NO, ignoring surrounding whitespace.
+answer="$(printf '%s' "$answer" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
 case "$answer" in
-  y|yes) ;;
-  n|no) echo "Установка отменена."; exit 0 ;;
+  y|Y|yes|YES|Yes|yEs|yeS|YEs|YeS|yES) ;;
+  n|N|no|NO|No|nO|No) echo "Установка отменена."; exit 0 ;;
   *) echo "Введи Y или N."; exit 1 ;;
 esac
 
