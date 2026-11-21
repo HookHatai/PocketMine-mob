@@ -18,8 +18,13 @@ cat <<'ART'
 ART
 printf '%b\n' "$RESET"
 printf '%b' "$PINK"; read -r -p "Запустить установку? (Y or N): " answer; printf '%b' "$RESET"
-answer="${answer,,}"
-case "$answer" in y|yes) ;; n|no) echo "Установка отменена."; exit 0 ;; *) echo "Введи Y или N."; exit 1 ;; esac
+# Normalize input (including Windows CRLF) and accept upper/lowercase.
+answer="$(printf '%s' "$answer" | tr -d '\r' | tr '[:upper:]' '[:lower:]' | xargs)"
+case "$answer" in
+  y|yes) ;;
+  n|no) echo "Установка отменена."; exit 0 ;;
+  *) echo "Введи Y или N."; exit 1 ;;
+esac
 
 [[ "$(uname -m)" == "x86_64" ]] || { echo "Нужна Ubuntu x86_64."; exit 1; }
 grep -qi ubuntu /etc/os-release || { echo "Этот установщик предназначен для Ubuntu."; exit 1; }
