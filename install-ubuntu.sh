@@ -18,7 +18,8 @@ cat <<'ART'
 ART
 printf '%b\n' "$RESET"
 printf '%b' "$PINK"; read -r -p "Запустить установку? (Y or N): " answer; printf '%b' "$RESET"
-case "$answer" in [Yy]|[Yy][Ee][Ss]) ;; [Nn]|[Nn][Oo]) echo "Установка отменена."; exit 0 ;; *) echo "Введи Y или N."; exit 1 ;; esac
+answer="${answer,,}"
+case "$answer" in y|yes) ;; n|no) echo "Установка отменена."; exit 0 ;; *) echo "Введи Y или N."; exit 1 ;; esac
 
 [[ "$(uname -m)" == "x86_64" ]] || { echo "Нужна Ubuntu x86_64."; exit 1; }
 grep -qi ubuntu /etc/os-release || { echo "Этот установщик предназначен для Ubuntu."; exit 1; }
@@ -75,10 +76,20 @@ cat > "$LOCAL_BIN/pmconsole" <<'EOF'
 if tmux has-session -t pocketmine-ubuntu 2>/dev/null; then tmux attach-session -t pocketmine-ubuntu; else echo "PocketMine не запущен. Сначала введи pmstart."; fi
 EOF
 chmod +x "$LOCAL_BIN/pmstart" "$LOCAL_BIN/pmstop" "$LOCAL_BIN/pmconsole"
-if ! grep -Fqx 'export PATH="$HOME/.local/bin:$PATH"' "$HOME/.bashrc" 2>/dev/null; then
-  printf '\nexport PATH="$HOME/.local/bin:$PATH"\n' >> "$HOME/.bashrc"
-fi
+for startup_file in "$HOME/.bashrc" "$HOME/.profile"; do
+  touch "$startup_file"
+  if ! grep -Fqx 'export PATH="$HOME/.local/bin:$PATH"' "$startup_file"; then
+    printf '\nexport PATH="$HOME/.local/bin:$PATH"\n' >> "$startup_file"
+  fi
+done
+
+# Make commands available immediately in the current Ubuntu session too.
+sudo ln -sf "$LOCAL_BIN/pmstart" /usr/local/bin/pmstart
+sudo ln -sf "$LOCAL_BIN/pmconsole" /usr/local/bin/pmconsole
+sudo ln -sf "$LOCAL_BIN/pmstop" /usr/local/bin/pmstop
 export PATH="$LOCAL_BIN:$PATH"
+source "$HOME/.bashrc" 2>/dev/null || true
+hash -r
 echo
 echo "Установка завершена. Старая папка ~/pocketmine не затронута."
 echo "Новая папка: $INSTALL_DIR"
