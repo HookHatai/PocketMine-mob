@@ -23,7 +23,7 @@ case "$answer" in [Yy]|[Yy][Ee][Ss]) ;; [Nn]|[Nn][Oo]) echo "Установка 
 [[ "$(uname -m)" == "x86_64" ]] || { echo "Нужна Ubuntu x86_64."; exit 1; }
 grep -qi ubuntu /etc/os-release || { echo "Этот установщик предназначен для Ubuntu."; exit 1; }
 
-ASSET_URL="https://github.com/HookHatai/PocketMine-mob/releases/download/Ubuntu-x64/pocketmine-162dev-ubuntu-x64.tar.gz"
+ASSET_URL="https://github.com/HookHatai/PocketMine-mob/releases/download/pharaa/pocketmine-162dev-ubuntu-x64.tar.gz"
 EXPECTED_SHA256="ec391091963e5379acce2624888093ec67bd479ebd875306bbc0a32cef40b3b3"
 ARCHIVE="$HOME/pocketmine-162dev-ubuntu-x64.tar.gz"
 INSTALL_DIR="$HOME/pocketmine-162dev-ubuntu-x64"
